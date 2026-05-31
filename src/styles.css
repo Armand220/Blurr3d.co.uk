@@ -1,0 +1,22 @@
+@import "tailwindcss" source("../");
+
+@plugin "tailwindcss-animate";
+
+@custom-variant dark (&:is(.dark *));
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #060608;
+  overflow-x: hidden;
+}
+
+@layer base {
+  * {
+    border-color: currentColor;
+  }
+}
