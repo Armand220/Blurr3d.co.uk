@@ -6,3 +6,9 @@ dist
 node_modules
 .idea
 .env
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+!.env.example
