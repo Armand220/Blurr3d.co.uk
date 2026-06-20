@@ -6,11 +6,11 @@ export const Route = createRootRoute({
     meta: [
       { charSet: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { title: 'BLURRED' },
-      { name: 'description', content: 'Personal portfolio of BLURRED' },
+      { title: 'BLURRED | Personal Portfolio' },
+      { name: 'description', content: 'Cinematic personal portfolio for BLURRED with a scroll reveal, bio, and social links.' },
     ],
     links: [
-      { rel: 'icon', href: '/favicon.png', type: 'image/jpeg' },
+      { rel: 'icon', href: '/favicon.ico', type: 'image/x-icon' },
     ],
   }),
   shellComponent: RootDocument,

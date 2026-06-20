@@ -6,6 +6,10 @@ export const Route = createFileRoute('/')({
 })
 
 const USERNAME = 'BLURRED'
+const BIO =
+  'I am learning web development one project at a time, turning experiments into a portfolio I can stand behind.'
+const BIO_DETAIL =
+  'Curious about front-end craft, motion, and practical interfaces. I am focused on steady progress, better taste, and shipping work that feels deliberate.'
 
 // Pre-computed particle positions — deterministic so SSR and client markup match
 const PARTICLES = [
@@ -643,6 +647,144 @@ export default function Portfolio() {
           z-index: 2;
         }
 
+        .hero-tabs {
+          position: absolute;
+          top: 1.35rem;
+          right: 1.35rem;
+          display: flex;
+          gap: 0.5rem;
+          z-index: 3;
+        }
+
+        .hero-tab {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.45rem;
+          padding: 0.6rem 0.85rem;
+          border: 1px solid var(--border);
+          border-radius: 999px;
+          background: rgba(14,14,18,0.68);
+          color: var(--text);
+          text-decoration: none;
+          font-family: var(--font-mono);
+          font-size: 0.58rem;
+          letter-spacing: 0.18em;
+          text-transform: uppercase;
+          transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease, color 0.2s ease;
+          backdrop-filter: blur(14px);
+        }
+
+        .hero-tab:hover {
+          border-color: rgba(212,178,90,0.55);
+          background: rgba(212,178,90,0.08);
+          transform: translateY(-1px);
+        }
+
+        .hero-tab.active {
+          background: rgba(212,178,90,0.14);
+          border-color: rgba(212,178,90,0.45);
+          color: #ffffff;
+        }
+
+        .hero-tab svg {
+          width: 13px;
+          height: 13px;
+          flex-shrink: 0;
+        }
+
+        .hero-tab-label {
+          white-space: nowrap;
+        }
+
+        .section-tabs {
+          display: flex;
+          gap: 0.5rem;
+          flex-wrap: wrap;
+          margin-bottom: 2rem;
+        }
+
+        .donate-section {
+          min-height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 4rem 2rem;
+          position: relative;
+        }
+
+        .donate-inner {
+          max-width: 640px;
+          width: 100%;
+          margin: 0 auto;
+        }
+
+        .donate-panel {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 1.25rem;
+          padding: 2rem 2.25rem 2.25rem;
+          border-top: 1px solid var(--border);
+          background: rgba(8,8,12,0.72);
+        }
+
+        .donate-copy {
+          display: flex;
+          flex-direction: column;
+          gap: 0.35rem;
+          width: 100%;
+        }
+
+        .donate-label {
+          font-family: var(--font-mono);
+          font-size: 0.58rem;
+          letter-spacing: 0.18em;
+          text-transform: uppercase;
+          color: var(--accent-bright);
+        }
+
+        .donate-text {
+          margin: 0;
+          color: var(--text);
+          font-size: 0.85rem;
+          line-height: 1.85;
+          max-width: 34rem;
+        }
+
+        .donate-tab {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.55rem;
+          padding: 0.75rem 1rem;
+          border: 1px solid rgba(212,178,90,0.35);
+          background: rgba(212,178,90,0.08);
+          color: #fff;
+          text-decoration: none;
+          font-family: var(--font-mono);
+          font-size: 0.62rem;
+          letter-spacing: 0.18em;
+          text-transform: uppercase;
+          transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+        }
+
+        .donate-actions {
+          display: flex;
+          justify-content: flex-end;
+          width: 100%;
+        }
+
+        .donate-tab:hover {
+          transform: translateY(-1px);
+          background: rgba(212,178,90,0.14);
+          border-color: rgba(212,178,90,0.55);
+        }
+
+        .donate-tab svg {
+          width: 14px;
+          height: 14px;
+          flex-shrink: 0;
+        }
+
         .hint-chevron {
           color: var(--accent);
           animation: chevron-bob 1.8s ease-in-out infinite;
@@ -1202,11 +1344,11 @@ export default function Portfolio() {
             </div>
 
             <div className="hero-corner tl">
-              <div>PORTFOLIO</div>
-              <div style={{ marginTop: '0.3rem', color: 'var(--accent-dim)' }}>v1.0</div>
+              <div>PERSONAL PORTFOLIO</div>
+              <div style={{ marginTop: '0.3rem', color: 'var(--accent-dim)' }}>2026 EDITION</div>
             </div>
             <div className="hero-corner tr">
-              <div>EST. 2024</div>
+              <div>SCROLL REVEAL</div>
             </div>
             <div className="hero-corner bl" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <div
@@ -1232,6 +1374,29 @@ export default function Portfolio() {
             >
               {USERNAME}
             </h1>
+
+            <div className="hero-tabs" aria-label="Primary sections">
+              <a className="hero-tab active" href="/" aria-current="page">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M4 19.5V4.5A1.5 1.5 0 015.5 3h13A1.5 1.5 0 0120 4.5v15" />
+                </svg>
+                <span className="hero-tab-label">Home</span>
+              </a>
+              <a className="hero-tab" href="/projects">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M4 19.5V4.5A1.5 1.5 0 015.5 3h13A1.5 1.5 0 0120 4.5v15" />
+                  <path d="M8 7h8M8 11h8M8 15h5" />
+                </svg>
+                <span className="hero-tab-label">Projects</span>
+              </a>
+              <a className="hero-tab" href="/contact">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M4 6h16v12H4z" />
+                  <path d="m4 7 8 6 8-6" />
+                </svg>
+                <span className="hero-tab-label">Contact</span>
+              </a>
+            </div>
 
             <div className="hero-scroll-hint" style={{ opacity: blurProgress > 0.3 ? 0 : 1, transition: 'opacity 0.4s ease' }}>
               <span className="hint-text">scroll</span>
@@ -1269,14 +1434,9 @@ export default function Portfolio() {
                 </div>
               </div>
               <div className="mac-body">
-                <div className="desc-tag">01 — About</div>
-                <p className="desc-text">
-                  Grinding to learn code, one line at a time. Building my presence online and figuring it all out along the way.
-                </p>
-                <p className="desc-sub">
-                  Aspiring developer · Growing creator · Learning in public.
-                  Just starting the coding journey and sharing the process as it happens. Here for the grind, the growth, and everyone who wants to come along for the ride.
-                </p>
+                <div className="desc-tag">01 - About</div>
+                <p className="desc-text">{BIO}</p>
+                <p className="desc-sub">{BIO_DETAIL}</p>
               </div>
             </div>
           </div>
@@ -1308,7 +1468,22 @@ export default function Portfolio() {
                 </div>
               </div>
               <div className="mac-body">
-                <div className="socials-tag">02 — Find me</div>
+                <div className="section-tabs" aria-label="Find me tabs">
+                  <div className="hero-tab active" aria-current="page">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M4 4h16v16H4z" />
+                      <path d="M4 9h16M9 9v11" />
+                    </svg>
+                    <span className="hero-tab-label">Find Me</span>
+                  </div>
+                  <a className="hero-tab" href="/contact">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M4 6h16v12H4z" />
+                      <path d="m4 7 8 6 8-6" />
+                    </svg>
+                    <span className="hero-tab-label">Contact Me</span>
+                  </a>
+                </div>
                 <nav className="social-list" aria-label="Social links">
                   {SOCIALS.map((s, i) => (
                     <a
@@ -1339,6 +1514,45 @@ export default function Portfolio() {
           </div>
         </section>
 
+        <section className="donate-section">
+          <div className="donate-inner">
+            <div className="mac-window">
+              <div className="mac-titlebar">
+                <div className="mac-lights">
+                  <span className="mac-light close" />
+                  <span className="mac-light min" />
+                  <span className="mac-light max" />
+                </div>
+                <div className="mac-title">donate.app</div>
+              </div>
+              <div className="donate-panel">
+                <div className="donate-copy">
+                  <div className="donate-label">05 - Donate</div>
+                  <p className="donate-text">
+                    Support the project on Ko-fi if you want to help keep it moving.
+                    Donations go toward hosting, tools, and time spent refining the
+                    site so it stays sharp and independent.
+                  </p>
+                </div>
+                <div className="donate-actions">
+                  <a
+                    className="donate-tab"
+                    href="https://ko-fi.com/blurreddonate"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M8 7h10a3 3 0 0 1 0 6h-1l-2 4H9L8 7Z" />
+                      <path d="M8 7 7 3H4" />
+                    </svg>
+                    Ko-fi
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <footer className="footer">
           <span style={{ color: 'var(--accent-dim)' }}>{USERNAME}</span>
           {' · '}
@@ -1348,3 +1562,4 @@ export default function Portfolio() {
     </>
   )
 }
+

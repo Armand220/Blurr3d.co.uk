@@ -1,133 +1,212 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { useState } from 'react'
-import { Mail, Send } from 'lucide-react'
+import { Mail, ArrowUpRight, ShieldAlert } from 'lucide-react'
 
 export const Route = createFileRoute('/contact')({
   component: Contact,
 })
 
-function Contact() {
-  const [submitted, setSubmitted] = useState(false)
+const CONTACT_EMAIL = 'blurredbusinessemail@gmail.com'
 
-  if (submitted) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center max-w-md mx-auto px-4">
-          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Mail className="w-8 h-8 text-green-600" />
+function Contact() {
+  return (
+    <>
+      <style>{`
+        .contact-shell {
+          min-height: 100vh;
+          background: var(--bg);
+          color: var(--text);
+        }
+
+        .contact-shell * {
+          box-sizing: border-box;
+        }
+
+        .contact-wrap {
+          min-height: 100vh;
+          display: flex;
+          align-items: center;
+          padding: 3rem 1rem;
+        }
+
+        .contact-card {
+          max-width: 760px;
+          width: 100%;
+          margin: 0 auto;
+          background: rgba(14,14,18,0.72);
+          border: 1px solid var(--border);
+          border-radius: 12px;
+          backdrop-filter: blur(18px) saturate(140%);
+          box-shadow: 0 30px 80px -20px rgba(0,0,0,0.8);
+          overflow: hidden;
+        }
+
+        .contact-titlebar {
+          display: flex;
+          align-items: center;
+          gap: 0.85rem;
+          height: 38px;
+          padding: 0 1rem;
+          background: linear-gradient(180deg, rgba(38,38,48,0.9), rgba(26,26,34,0.9));
+          border-bottom: 1px solid rgba(0,0,0,0.5);
+          user-select: none;
+        }
+
+        .contact-title {
+          font-family: var(--font-mono);
+          font-size: 0.65rem;
+          letter-spacing: 0.16em;
+          color: var(--text);
+          text-transform: uppercase;
+        }
+
+        .contact-body {
+          padding: 2.5rem 2rem 2.25rem;
+          color: var(--text);
+        }
+
+        .contact-body h1,
+        .contact-body p,
+        .contact-body span,
+        .contact-body a {
+          color: var(--text) !important;
+        }
+
+        .contact-lights {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          flex-shrink: 0;
+        }
+
+        .contact-light {
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+          position: relative;
+          box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.35);
+        }
+
+        .contact-light.close { background: #ff5f57; }
+        .contact-light.min { background: #febc2e; }
+        .contact-light.max { background: #28c840; }
+
+        .contact-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          margin-bottom: 1.35rem;
+          padding: 0.5rem 0.7rem;
+          border: 1px solid rgba(212,178,90,0.22);
+          background: rgba(212,178,90,0.06);
+          color: var(--accent-bright);
+          font-family: var(--font-mono);
+          font-size: 0.58rem;
+          letter-spacing: 0.18em;
+          text-transform: uppercase;
+        }
+
+        .contact-note {
+          display: flex;
+          gap: 0.8rem;
+          align-items: flex-start;
+          max-width: 42rem;
+          margin: 1.5rem 0 1.75rem;
+          padding: 1rem 1rem;
+          border-left: 1px solid rgba(212,178,90,0.3);
+          background: rgba(255,255,255,0.02);
+          color: var(--muted) !important;
+          line-height: 1.75;
+        }
+
+        .contact-note svg {
+          flex-shrink: 0;
+          margin-top: 0.15rem;
+          color: var(--accent) !important;
+        }
+
+        .contact-email {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.75rem;
+          padding: 0.95rem 1.1rem;
+          border: 1px solid var(--border);
+          background: rgba(14,14,18,0.72);
+          color: #ffffff !important;
+          text-decoration: none;
+          font-family: var(--font-mono);
+          font-size: 0.7rem;
+          letter-spacing: 0.18em;
+          text-transform: uppercase;
+          backdrop-filter: blur(14px);
+          transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+        }
+
+        .contact-email:hover {
+          border-color: rgba(212,178,90,0.55);
+          background: rgba(212,178,90,0.08);
+          transform: translateY(-1px);
+        }
+
+        @media (max-width: 640px) {
+          .contact-body {
+            padding: 2rem 1.25rem;
+          }
+        }
+      `}</style>
+      <div className="contact-shell">
+        <div className="contact-wrap">
+          <div className="contact-card">
+            <div className="contact-titlebar">
+              <div className="contact-lights">
+                <span className="contact-light close" />
+                <span className="contact-light min" />
+                <span className="contact-light max" />
+              </div>
+              <div className="contact-title">contact.app</div>
+            </div>
+            <div className="contact-body">
+              <div className="contact-badge">03 - Contact</div>
+              <h1
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontSize: 'clamp(2.2rem, 5vw, 4.2rem)',
+                  lineHeight: 1,
+                  margin: '0 0 1rem',
+                  color: 'var(--text)',
+                }}
+              >
+                Send your question here.
+              </h1>
+              <p
+                style={{
+                  maxWidth: '42rem',
+                  margin: '0',
+                  color: 'var(--text)',
+                  fontSize: '0.95rem',
+                  lineHeight: 1.8,
+                }}
+              >
+                Use the email below for work, questions, or anything you want to
+                discuss.
+              </p>
+
+              <div className="contact-note">
+                <ShieldAlert size={16} />
+                <span>
+                  Any trolling, spam, or nonsense will be ignored and blocked.
+                  Keep it direct and useful.
+                </span>
+              </div>
+
+              <a href={`mailto:${CONTACT_EMAIL}`} className="contact-email">
+                <Mail size={16} />
+                {CONTACT_EMAIL}
+                <ArrowUpRight size={14} />
+              </a>
+            </div>
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">
-            Message Sent!
-          </h2>
-          <p className="text-gray-600 mb-6">
-            Thanks for reaching out. I'll get back to you as soon as possible.
-          </p>
-          <button
-            onClick={() => setSubmitted(false)}
-            className="px-6 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors"
-          >
-            Send Another Message
-          </button>
         </div>
       </div>
-    )
-  }
-
-  return (
-    <div className="min-h-screen">
-      <div className="max-w-2xl mx-auto px-4 py-12">
-        <h1 className="text-4xl font-bold text-gray-900 mb-2">Contact</h1>
-        <p className="text-gray-600 mb-8">
-          Have a question or want to work together? Drop me a message.
-        </p>
-
-        <form
-          name="contact"
-          method="POST"
-          data-netlify="true"
-          netlify-honeypot="bot-field"
-          onSubmit={(e) => {
-            e.preventDefault()
-            const form = e.currentTarget
-            const formData = new FormData(form)
-            fetch('/contact.html', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-              body: new URLSearchParams(
-                formData as unknown as Record<string, string>,
-              ).toString(),
-            })
-              .then(() => setSubmitted(true))
-          }}
-          className="space-y-6"
-        >
-          <input type="hidden" name="form-name" value="contact" />
-          <p hidden>
-            <label>
-              Don't fill this out: <input name="bot-field" />
-            </label>
-          </p>
-
-          <div>
-            <label
-              htmlFor="name"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Name
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
-              placeholder="Your name"
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
-              placeholder="your@email.com"
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="message"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Message
-            </label>
-            <textarea
-              id="message"
-              name="message"
-              required
-              rows={6}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors resize-none"
-              placeholder="Your message..."
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors font-medium"
-          >
-            <Send size={16} />
-            Send Message
-          </button>
-        </form>
-      </div>
-    </div>
+    </>
   )
 }

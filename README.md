@@ -1,13 +1,12 @@
-# BLURRED — Personal Portfolio
+# BLURRED - Personal Portfolio
 
 A cinematic personal portfolio site with a loading screen, scroll-triggered username reveal, bio section, and social links.
 
 ## Tech Stack
 
-- **TanStack Start** (React, file-based routing)
-- **Tailwind CSS v4**
-- **Google Fonts** — Syne (display) + Space Mono (mono)
-- **Netlify** (hosting + edge functions)
+- TanStack Start (React, file-based routing)
+- Tailwind CSS v4
+- Google Fonts - Syne (display) + Space Mono (mono)
 
 ## Features
 
@@ -20,10 +19,10 @@ A cinematic personal portfolio site with a loading screen, scroll-triggered user
 
 ```bash
 npm install
-netlify dev
+npm run dev
 ```
 
-Open [http://localhost:8888](http://localhost:8888).
+Open [http://localhost:3000](http://localhost:3000).
 
 ## Customization
 

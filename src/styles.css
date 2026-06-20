@@ -4,6 +4,20 @@
 
 @custom-variant dark (&:is(.dark *));
 
+:root {
+  --bg: #060608;
+  --surface: #0e0e12;
+  --border: #1c1c26;
+  --text: #ece9f3;
+  --muted: #6a6882;
+  --accent: #d4b25a;
+  --accent-bright: #f0d486;
+  --accent-dim: #7d6630;
+  --cool: #6a72c4;
+  --font-display: 'Syne', sans-serif;
+  --font-mono: 'Space Mono', monospace;
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
 }
@@ -12,7 +26,9 @@ html, body {
   margin: 0;
   padding: 0;
   background: #060608;
+  color: #ece9f3;
   overflow-x: hidden;
+  font-family: var(--font-mono);
 }
 
 @layer base {

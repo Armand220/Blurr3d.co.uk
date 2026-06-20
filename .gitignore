@@ -1,0 +1,8 @@
+# Generated / local-only
+.netlify
+.tanstack
+.content-collections
+dist
+node_modules
+.idea
+.env
