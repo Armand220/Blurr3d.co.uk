@@ -10,7 +10,7 @@ export const Route = createRootRoute({
       { name: 'description', content: 'Cinematic personal portfolio for BLURRED with a scroll reveal, bio, and social links.' },
     ],
     links: [
-      { rel: 'icon', href: '/favicon.ico', type: 'image/x-icon' },
+      { rel: 'icon', href: '/favicon.png', type: 'image/png' },
     ],
   }),
   shellComponent: RootDocument,
