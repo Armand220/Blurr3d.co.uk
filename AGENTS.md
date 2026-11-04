@@ -12,14 +12,13 @@ All site copy lives in `src/lib/site.tsx`:
 
 - `USERNAME`, `TAGLINE`, `BIO`, `BIO_DETAIL`, `NOW`, `STACK`
 - `SOCIALS` (name, handle, `href` or `copy`, icon), `CONTACT_EMAIL`, `KOFI_URL`
-- `MUSIC_VIDEO_ID` — YouTube video used as the background track
 - Copy style: casual, lowercase, first person. No em dashes or slogan-style lines.
 
 ### Architecture Notes
 
 - Design system lives in `src/styles.css` (tokens on `:root`, shared classes: `.container`, `.section`, `.eyebrow`, `.btn`, `.card`, `.window`, `.tag`, …). Routes use these classes rather than per-page `<style>` blocks.
-- `src/routes/__root.tsx` renders the shared shell: `SiteNav`, `ScrollProgress`, `SiteFooter`, and `MusicPlayer`, all wrapped in `MusicProvider`.
-- `src/components/site/Music.tsx` — YouTube player lives in the root so music keeps playing across client-side navigation. The home intro's ENTER click calls `start()` (the user gesture that unlocks audio). `entered` makes sure the intro only shows once per visit, and only when the visit starts on `/`.
+- `src/routes/__root.tsx` renders the shared shell: `SiteNav`, `ScrollProgress`, `SiteFooter`, and a styled 404.
+- Intro loader (`Intro` in `src/routes/index.tsx`) plays once per visit, only when the visit starts on `/`; `src/lib/intro.ts` tracks that. It fades out on its own (click skips). No music or audio.
 - `src/components/site/Chrome.tsx` — nav, footer, scroll progress bar, `Window` (macOS frame), `CopyEmailButton`, and `useReveal()` (IntersectionObserver that adds `.is-in` to `[data-reveal]` elements).
 - Scroll effects write CSS variables with `requestAnimationFrame` instead of React state: `--reveal` on `.hero-wrap` (username blur), `--p` on `.about` (word-by-word statement), `--page-progress` on `<html>`. This keeps scrolling smooth and avoids SSR hydration mismatches.
 - Hero uses `position: sticky` inside a `170vh` wrapper so the username stays pinned while it unblurs.

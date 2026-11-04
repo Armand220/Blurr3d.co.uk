@@ -19,7 +19,6 @@ export const BIO_DETAIL =
 export const NOW = [
   { label: 'learning', value: 'react + typescript' },
   { label: 'building', value: 'this site' },
-  { label: 'listening', value: 'the song in the corner' },
 ]
 
 export const STACK = ['HTML', 'CSS', 'JavaScript', 'TypeScript', 'React', 'TanStack', 'Vite', 'Git', 'Cloudflare']
@@ -28,8 +27,6 @@ export const CONTACT_EMAIL = 'blurredbusinessemail@gmail.com'
 
 export const KOFI_URL = 'https://ko-fi.com/blurreddonate'
 
-/** YouTube video used as the background track. */
-export const MUSIC_VIDEO_ID = 'As1bpICMhzs'
 
 export type Social = {
   name: string

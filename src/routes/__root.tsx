@@ -7,7 +7,7 @@ import {
   useRouterState,
 } from '@tanstack/react-router'
 import { useEffect } from 'react'
-import { MusicPlayer, MusicProvider, useMusic } from '@/components/site/Music'
+import { intro } from '@/lib/intro'
 import { ScrollProgress, SiteFooter, SiteNav } from '@/components/site/Chrome'
 import '../styles.css'
 
@@ -78,7 +78,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 
 function RootLayout() {
   return (
-    <MusicProvider>
+    <>
       <SkipIntroOffHome />
       <a href="#main" className="skip-link">
         Skip to content
@@ -89,17 +89,15 @@ function RootLayout() {
         <Outlet />
       </main>
       <SiteFooter />
-      <MusicPlayer />
-    </MusicProvider>
+    </>
   )
 }
 
-/** The intro loader only belongs to a first visit that lands on the home page. */
+/** The intro loader only belongs to a visit that starts on the home page. */
 function SkipIntroOffHome() {
   const pathname = useRouterState({ select: (s) => s.location.pathname })
-  const { entered, markEntered } = useMusic()
   useEffect(() => {
-    if (!entered && pathname !== '/') markEntered()
-  }, [entered, pathname, markEntered])
+    if (pathname !== '/') intro.seen = true
+  }, [pathname])
   return null
 }

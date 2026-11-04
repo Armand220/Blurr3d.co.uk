@@ -1,8 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { ArrowUpRight, Coffee, Mail } from 'lucide-react'
 import { CopyEmailButton, SocialLink, Window, useReveal } from '@/components/site/Chrome'
-import { useMusic } from '@/components/site/Music'
+import { intro } from '@/lib/intro'
 import {
   BIO,
   BIO_DETAIL,
@@ -283,13 +283,11 @@ function Home() {
   )
 }
 
-/** Boot screen. ENTER is the click that unlocks audio. Shown once per visit. */
+/** Short boot screen on the first visit to the home page. Fades out by itself; click to skip. */
 function Intro() {
-  const { entered, markEntered, start } = useMusic()
   const [progress, setProgress] = useState(0)
   const [exiting, setExiting] = useState(false)
-  const [gone, setGone] = useState(entered)
-  const btnRef = useRef<HTMLButtonElement>(null)
+  const [gone, setGone] = useState(() => intro.seen)
   const ready = progress >= 100
 
   useEffect(() => {
@@ -311,26 +309,30 @@ function Intro() {
     return () => document.documentElement.classList.remove('is-locked')
   }, [gone])
 
-  useEffect(() => {
-    if (ready) btnRef.current?.focus({ preventScroll: true })
-  }, [ready])
-
-  const enter = useCallback(() => {
-    start()
+  const exit = () => {
+    intro.seen = true
     setExiting(true)
-    markEntered()
-    setTimeout(() => setGone(true), 900)
-  }, [start, markEntered])
+  }
+
+  useEffect(() => {
+    if (!ready || exiting) return
+    const t = setTimeout(exit, 350)
+    return () => clearTimeout(t)
+  }, [ready, exiting])
+
+  useEffect(() => {
+    if (!exiting) return
+    const t = setTimeout(() => setGone(true), 900)
+    return () => clearTimeout(t)
+  }, [exiting])
 
   if (gone) return null
 
   return (
-    <div className={`intro ${exiting ? 'is-exiting' : ''}`} role="dialog" aria-label="Welcome">
-      <div className="intro-grid" aria-hidden="true" />
-      <div className="intro-glow" aria-hidden="true" />
-      <div className="intro-sig" aria-hidden="true">
-        {USERNAME}
-      </div>
+    <div className={`intro ${exiting ? 'is-exiting' : ''}`} aria-hidden="true" onClick={exit}>
+      <div className="intro-grid" />
+      <div className="intro-glow" />
+      <div className="intro-sig">{USERNAME}</div>
       <div className="intro-bar">
         <div className="intro-row">
           <span>{ready ? 'ready' : 'loading'}</span>
@@ -340,16 +342,6 @@ function Intro() {
           <div className="intro-fill" style={{ transform: `scaleX(${progress / 100})` }} />
         </div>
       </div>
-      <button
-        ref={btnRef}
-        type="button"
-        className={`intro-enter ${ready ? 'is-ready' : ''}`}
-        onClick={enter}
-        disabled={!ready}
-      >
-        Enter
-      </button>
-      <p className="intro-note">turn your sound on</p>
     </div>
   )
 }
