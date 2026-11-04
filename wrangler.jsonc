@@ -5,5 +5,10 @@
   "compatibility_date": "2026-11-01",
   "compatibility_flags": ["nodejs_compat"],
   "main": "@tanstack/react-start/server-entry",
+  // Serve the site on the real domain. Applied on production deploys (main branch).
+  "routes": [
+    { "pattern": "blurr3d.co.uk", "custom_domain": true },
+    { "pattern": "www.blurr3d.co.uk", "custom_domain": true }
+  ],
   "observability": { "enabled": true }
 }
