@@ -27,6 +27,12 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
+## Deploying
+
+The site deploys to Cloudflare Workers. `npm run build` produces the Worker, and Cloudflare's
+GitHub integration uploads it with `wrangler`. The Worker name is set in `wrangler.jsonc` and must
+match the Worker's name in the Cloudflare dashboard.
+
 ## Customization
 
 Edit `src/lib/site.tsx`. It holds the username, tagline, bio, socials, email, Ko-fi link and music track.

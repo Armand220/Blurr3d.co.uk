@@ -38,7 +38,7 @@ All site copy lives in `src/lib/site.tsx`:
 | Content | Content Collections (type-safe markdown) |
 | AI | TanStack AI with multi-provider support |
 | Language | TypeScript 5.7 (strict mode) |
-| Deployment | Netlify |
+| Deployment | Cloudflare Workers (`wrangler.jsonc` + `@cloudflare/vite-plugin`) |
 
 ## Directory Structure
 
