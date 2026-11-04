@@ -1,5 +1,6 @@
 import {
   HeadContent,
+  Link,
   Outlet,
   Scripts,
   createRootRoute,
@@ -16,14 +17,13 @@ export const Route = createRootRoute({
       { charSet: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1, viewport-fit=cover' },
       { name: 'theme-color', content: '#060608' },
-      { title: 'BLURRED | Personal Portfolio' },
+      { title: 'BLURRED' },
       {
         name: 'description',
-        content:
-          'BLURRED — a web developer in progress. Cinematic portfolio with projects, socials and contact.',
+        content: "blurred's corner of the internet. teaching myself web dev, one broken build at a time.",
       },
-      { property: 'og:title', content: 'BLURRED | Personal Portfolio' },
-      { property: 'og:description', content: 'A web developer in progress, shipping work that feels deliberate.' },
+      { property: 'og:title', content: 'BLURRED' },
+      { property: 'og:description', content: 'teaching myself web dev, one broken build at a time.' },
       { property: 'og:type', content: 'website' },
       { property: 'og:url', content: 'https://blurr3d.co.uk' },
       { name: 'twitter:card', content: 'summary' },
@@ -40,7 +40,27 @@ export const Route = createRootRoute({
   }),
   shellComponent: RootDocument,
   component: RootLayout,
+  notFoundComponent: NotFound,
 })
+
+function NotFound() {
+  return (
+    <div className="page">
+      <div className="container narrow">
+        <div className="eyebrow">404</div>
+        <h1 className="h1">
+          nothing <span className="gold">here.</span>
+        </h1>
+        <p className="lede" style={{ marginBottom: '2rem' }}>
+          this page doesn&rsquo;t exist, or it used to and i deleted it.
+        </p>
+        <Link to="/" className="btn btn-ghost">
+          back home
+        </Link>
+      </div>
+    </div>
+  )
+}
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
