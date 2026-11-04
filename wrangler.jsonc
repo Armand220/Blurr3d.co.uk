@@ -10,5 +10,8 @@
     { "pattern": "blurr3d.co.uk", "custom_domain": true },
     { "pattern": "www.blurr3d.co.uk", "custom_domain": true }
   ],
+  // Keep the *.workers.dev URL and per-branch preview links working
+  "workers_dev": true,
+  "preview_urls": true,
   "observability": { "enabled": true }
 }

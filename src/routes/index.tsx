@@ -1,15 +1,14 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
-import { allProjects } from 'content-collections'
+import { createFileRoute } from '@tanstack/react-router'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { ArrowRight, ArrowUpRight, Coffee, ExternalLink, Github, Mail } from 'lucide-react'
-import { CopyEmailButton, Window, useReveal } from '@/components/site/Chrome'
+import { ArrowUpRight, Coffee, Mail } from 'lucide-react'
+import { CopyEmailButton, SocialLink, Window, useReveal } from '@/components/site/Chrome'
 import { useMusic } from '@/components/site/Music'
 import {
   BIO,
   BIO_DETAIL,
   CONTACT_EMAIL,
-  FOCUS,
   KOFI_URL,
+  NOW,
   SOCIALS,
   STACK,
   TAGLINE,
@@ -51,7 +50,7 @@ function Home() {
   const heroRef = useRef<HTMLElement>(null)
   const aboutRef = useRef<HTMLElement>(null)
 
-  // Scroll-linked effects write CSS variables directly — no React re-renders.
+  // Scroll-linked effects write CSS variables directly, so scrolling never re-renders React.
   useEffect(() => {
     let raf = 0
     const update = () => {
@@ -61,7 +60,7 @@ function Home() {
       const about = aboutRef.current
       if (about) {
         const r = about.getBoundingClientRect()
-        const p = clamp01((vh * 0.85 - r.top) / (r.height * 0.75))
+        const p = clamp01((vh * 0.85 - r.top) / (r.height * 0.6))
         about.style.setProperty('--p', p.toFixed(3))
       }
     }
@@ -99,7 +98,6 @@ function Home() {
   }, [])
 
   const words = BIO.split(' ')
-  const projects = allProjects.slice(0, 3)
 
   return (
     <>
@@ -146,15 +144,15 @@ function Home() {
           </div>
 
           <div className="hero-corner tl">
-            <span>Personal portfolio</span>
-            <span className="accent-dim">2026 edition</span>
+            <span>blurr3d.co.uk</span>
+            <span className="accent-dim">v2</span>
           </div>
           <div className="hero-corner bl">
             <span className="status-dot" aria-hidden="true" />
-            Online · open to ideas
+            online
           </div>
           <div className="hero-corner br">
-            <span>Scroll to reveal</span>
+            <span>keep scrolling</span>
             <span className="hero-meter" aria-hidden="true">
               <span />
             </span>
@@ -177,7 +175,7 @@ function Home() {
       </div>
 
       {/* ── Stack marquee ── */}
-      <div className="marquee" aria-label="Tools I work with">
+      <div className="marquee" aria-label="Stuff I use">
         <div className="marquee-track">
           {[0, 1].map((k) => (
             <div className="marquee-group" key={k} aria-hidden={k === 1}>
@@ -196,7 +194,7 @@ function Home() {
       <section className="section about" ref={aboutRef} id="about">
         <div className="container">
           <div className="eyebrow" data-reveal>
-            01 — About
+            about
           </div>
           <p className="about-statement" style={{ '--n': words.length } as React.CSSProperties}>
             {words.map((w, i) => (
@@ -210,96 +208,22 @@ function Home() {
             <p className="about-detail" data-reveal>
               {BIO_DETAIL}
             </p>
-            <Window title="about-me.app" className="about-window" data-reveal>
+            <Window title="now.txt" className="about-window" data-reveal>
               <dl className="spec">
+                {NOW.map((row) => (
+                  <div key={row.label}>
+                    <dt>{row.label}</dt>
+                    <dd>{row.value}</dd>
+                  </div>
+                ))}
                 <div>
-                  <dt>Handle</dt>
-                  <dd>{USERNAME}</dd>
-                </div>
-                <div>
-                  <dt>Role</dt>
-                  <dd>{TAGLINE}</dd>
-                </div>
-                <div>
-                  <dt>Status</dt>
+                  <dt>status</dt>
                   <dd>
-                    <span className="status-dot" aria-hidden="true" /> Learning &amp; building
-                  </dd>
-                </div>
-                <div>
-                  <dt>Contact</dt>
-                  <dd>
-                    <a href={`mailto:${CONTACT_EMAIL}`} className="link">
-                      Email me
-                    </a>
+                    <span className="status-dot" aria-hidden="true" /> probably coding
                   </dd>
                 </div>
               </dl>
             </Window>
-          </div>
-
-          <ul className="focus-grid">
-            {FOCUS.map((f, i) => (
-              <li key={f.title} className="focus-card card" data-reveal style={{ transitionDelay: `${i * 80}ms` }} onPointerMove={trackSpotlight}>
-                <span className="focus-index">{String(i + 1).padStart(2, '0')}</span>
-                <h3>{f.title}</h3>
-                <p>{f.text}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      {/* ── Work ── */}
-      <section className="section" id="work">
-        <div className="container">
-          <div className="section-head" data-reveal>
-            <div>
-              <div className="eyebrow">02 — Selected work</div>
-              <h2 className="h2">Things I&rsquo;ve built.</h2>
-            </div>
-            <Link to="/projects" className="btn btn-ghost">
-              All projects <ArrowRight size={14} />
-            </Link>
-          </div>
-
-          <div className="work-list">
-            {projects.map((p, i) => (
-              <article key={p._meta.path} className="work-item card" data-reveal onPointerMove={trackSpotlight}>
-                <span className="work-index">{String(i + 1).padStart(2, '0')}</span>
-                <div className="work-main">
-                  <h3 className="work-title">{p.title}</h3>
-                  <p className="work-desc">{p.description}</p>
-                  <div className="tags">
-                    {p.tags.map((t) => (
-                      <span key={t} className="tag">
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                <div className="work-links">
-                  {p.liveUrl && (
-                    <a href={p.liveUrl} target="_blank" rel="noopener noreferrer" className="icon-btn" aria-label={`${p.title} live site`}>
-                      <ExternalLink size={16} />
-                    </a>
-                  )}
-                  {p.github && (
-                    <a href={p.github} target="_blank" rel="noopener noreferrer" className="icon-btn" aria-label={`${p.title} on GitHub`}>
-                      <Github size={16} />
-                    </a>
-                  )}
-                </div>
-              </article>
-            ))}
-            <div className="work-item work-soon" data-reveal>
-              <span className="work-index">{String(projects.length + 1).padStart(2, '0')}</span>
-              <div className="work-main">
-                <h3 className="work-title">Next project</h3>
-                <p className="work-desc">In the works. Follow along on GitHub to see it take shape.</p>
-              </div>
-              <span className="soon-pill">Soon</span>
-            </div>
           </div>
         </div>
       </section>
@@ -309,29 +233,13 @@ function Home() {
         <div className="container">
           <div className="section-head" data-reveal>
             <div>
-              <div className="eyebrow">03 — Find me</div>
-              <h2 className="h2">Around the internet.</h2>
+              <div className="eyebrow">socials</div>
+              <h2 className="h2">where to find me.</h2>
             </div>
           </div>
           <div className="social-grid">
             {SOCIALS.map((s, i) => (
-              <a
-                key={s.name}
-                href={s.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="social-card card"
-                data-reveal
-                style={{ transitionDelay: `${i * 80}ms` }}
-                onPointerMove={trackSpotlight}
-              >
-                <span className="social-icon">{s.icon}</span>
-                <span className="social-text">
-                  <span className="social-name">{s.name}</span>
-                  <span className="social-handle">{s.handle}</span>
-                </span>
-                <ArrowUpRight className="social-arrow" size={18} />
-              </a>
+              <SocialLink key={s.name} social={s} variant="card" style={{ transitionDelay: `${i * 80}ms` }} />
             ))}
           </div>
         </div>
@@ -341,31 +249,28 @@ function Home() {
       <section className="section cta" id="contact">
         <div className="container">
           <div className="cta-panel" data-reveal>
-            <div className="eyebrow">04 — Say hi</div>
+            <div className="eyebrow">contact</div>
             <h2 className="cta-title">
-              Got a question or an idea?
+              want to talk?
               <br />
-              <span className="gold">Let&rsquo;s talk.</span>
+              <span className="gold">just email&nbsp;me.</span>
             </h2>
             <div className="cta-actions">
               <a href={`mailto:${CONTACT_EMAIL}`} className="btn btn-primary">
                 <Mail size={14} /> Email me
               </a>
               <CopyEmailButton />
-              <Link to="/contact" className="btn btn-ghost">
-                Contact page <ArrowRight size={14} />
-              </Link>
             </div>
           </div>
 
           <div className="donate card" data-reveal onPointerMove={trackSpotlight}>
             <div>
               <div className="donate-label">
-                <Coffee size={14} /> Support the work
+                <Coffee size={14} /> ko-fi
               </div>
               <p>
-                Donations on Ko-fi go toward hosting, tools, and time spent refining the site so it
-                stays sharp and independent.
+                if you like what i&rsquo;m doing you can buy me a coffee. it helps pay for the domain and
+                hosting.
               </p>
             </div>
             <a href={KOFI_URL} target="_blank" rel="noopener noreferrer" className="btn btn-ghost">
@@ -428,7 +333,7 @@ function Intro() {
       </div>
       <div className="intro-bar">
         <div className="intro-row">
-          <span>{ready ? 'Ready' : 'Initializing'}</span>
+          <span>{ready ? 'ready' : 'loading'}</span>
           <span>{String(progress).padStart(3, '0')}%</span>
         </div>
         <div className="intro-track">
@@ -444,7 +349,7 @@ function Intro() {
       >
         Enter
       </button>
-      <p className="intro-note">Best with sound on</p>
+      <p className="intro-note">turn your sound on</p>
     </div>
   )
 }

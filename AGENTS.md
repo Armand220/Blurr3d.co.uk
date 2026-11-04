@@ -10,10 +10,10 @@ A cinematic personal portfolio site for the user BLURRED. Features a loading scr
 
 All site copy lives in `src/lib/site.tsx`:
 
-- `USERNAME`, `TAGLINE`, `BIO`, `BIO_DETAIL`, `FOCUS`, `STACK`
-- `SOCIALS` (name, handle, link, icon), `CONTACT_EMAIL`, `KOFI_URL`
+- `USERNAME`, `TAGLINE`, `BIO`, `BIO_DETAIL`, `NOW`, `STACK`
+- `SOCIALS` (name, handle, `href` or `copy`, icon), `CONTACT_EMAIL`, `KOFI_URL`
 - `MUSIC_VIDEO_ID` — YouTube video used as the background track
-- Projects come from `content/projects/*.md`
+- Copy style: casual, lowercase, first person. No em dashes or slogan-style lines.
 
 ### Architecture Notes
 
@@ -52,9 +52,6 @@ All site copy lives in `src/lib/site.tsx`:
 │   │   └── code-school.md  # Education content: Code School.
 │   ├── jobs
 │   │   └── initech-junior.md  # Job content: Initech Junior.
-│   └── projects
-│       ├── portfolio-site.md  # Project content.
-│       └── task-manager.md  # Project content.
 ├── public
 │   ├── contact.html  # Static contact form.
 │   ├── favicon.ico
@@ -83,13 +80,12 @@ All site copy lives in `src/lib/site.tsx`:
 │   │   ├── api.resume-chat.ts  # POST handler for resume AI chat with getJobsBySkill, getAllJobs, etc.
 │   │   ├── contact.tsx  # Contact page.
 │   │   ├── index.tsx  # Portfolio home: blog index.
-│   │   ├── projects.tsx  # Projects page.
 │   │   └── resume.tsx  # Resume page with ResumeAssistant.
 │   ├── router.tsx  # TanStack Router setup: creates router from generated routeTree with scroll restoration.
 │   └── styles.css  # Global styles.
 ├── .gitignore  # Template for .gitignore: node_modules, dist, .env, .netlify, .tanstack, etc.
 ├── AGENTS.md  # This document provides an overview of the project structure for developers and AI agents working on this codebase.
-├── content-collections.ts  # Content Collections: jobs, education, blog, projects schemas.
+├── content-collections.ts  # Content Collections: jobs, education, blog schemas.
 ├── netlify.toml  # Netlify deployment config: build command (vite build), publish directory (dist/client), and dev server settings (port 8888, target 3000).
 ├── package.json  # Project manifest with TanStack Start, React 19, Vite 7, Tailwind CSS 4, and Netlify plugin dependencies; defines dev and build scripts.
 ├── pnpm-lock.yaml
@@ -157,13 +153,12 @@ npm run preview  # Preview production build
 - Zustand if you need it for global state
 ### Portfolio Integration
 
-Developer portfolio with Content Collections (jobs, education, blog, projects) and ResumeAssistant.
+Developer portfolio with Content Collections (jobs, education, blog) and ResumeAssistant.
 
 **Content Collections:**
 - `jobs` - jobTitle, company, startDate, endDate, location, tags, content
 - `education` - school, summary, startDate, endDate, tags, content
 - `blog` - title, date, summary, tags, author, content
-- `projects` - title, description, tags, github, liveUrl, image, content
 
 **AI tools available (ResumeAssistant):**
 - `getJobsBySkill` - Query jobs by skill tag
@@ -171,7 +166,7 @@ Developer portfolio with Content Collections (jobs, education, blog, projects) a
 - `getAllEducation` - Get education history
 - `searchExperience` - Full-text search across resume
 
-**Routes:** /, /resume, /projects, /contact, /blog/$slug
+**Routes:** /, /contact, /resume, /blog/$slug
 
 ## Environment Variables
 

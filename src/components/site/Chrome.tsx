@@ -1,11 +1,10 @@
 import { Link } from '@tanstack/react-router'
 import { useEffect, useState, type ReactNode } from 'react'
-import { ArrowUp, Check, Copy } from 'lucide-react'
-import { CONTACT_EMAIL, KOFI_URL, SOCIALS, USERNAME } from '@/lib/site'
+import { ArrowUp, ArrowUpRight, Check, Copy } from 'lucide-react'
+import { CONTACT_EMAIL, KOFI_URL, SOCIALS, USERNAME, trackSpotlight, type Social } from '@/lib/site'
 
 const NAV = [
   { to: '/', label: 'Home' },
-  { to: '/projects', label: 'Projects' },
   { to: '/contact', label: 'Contact' },
 ] as const
 
@@ -22,7 +21,7 @@ export function SiteNav() {
   return (
     <header className={`nav ${scrolled ? 'is-scrolled' : ''}`}>
       <div className="nav-inner">
-        <Link to="/" className="nav-logo" aria-label={`${USERNAME} — home`}>
+        <Link to="/" className="nav-logo" aria-label={`${USERNAME} home`}>
           <span className="nav-logo-mark" aria-hidden="true" />
           <span className="nav-logo-text">{USERNAME}</span>
         </Link>
@@ -76,12 +75,11 @@ export function SiteFooter() {
       <div className="container footer-inner">
         <div className="footer-brand">
           <span className="footer-name">{USERNAME}</span>
-          <span className="footer-meta">© {new Date().getFullYear()} · made with intent</span>
+          <span className="footer-meta">© {new Date().getFullYear()} · made by me</span>
         </div>
         <nav className="footer-links" aria-label="Footer">
-          <Link to="/projects">Projects</Link>
           <Link to="/contact">Contact</Link>
-          {SOCIALS.map((s) => (
+          {SOCIALS.filter((s) => s.href).map((s) => (
             <a key={s.name} href={s.href} target="_blank" rel="noopener noreferrer">
               {s.name}
             </a>
@@ -132,7 +130,8 @@ export function Window({
   )
 }
 
-export function CopyEmailButton({ className = 'btn btn-ghost' }: { className?: string }) {
+/** Copies text to the clipboard; `copied` flips back after a moment. */
+export function useCopy() {
   const [copied, setCopied] = useState(false)
 
   useEffect(() => {
@@ -141,22 +140,102 @@ export function CopyEmailButton({ className = 'btn btn-ghost' }: { className?: s
     return () => clearTimeout(t)
   }, [copied])
 
+  const copy = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text)
+      setCopied(true)
+      return true
+    } catch {
+      return false
+    }
+  }
+
+  return { copied, copy }
+}
+
+export function CopyEmailButton({ className = 'btn btn-ghost' }: { className?: string }) {
+  const { copied, copy } = useCopy()
+
   return (
     <button
       type="button"
       className={className}
       onClick={async () => {
-        try {
-          await navigator.clipboard.writeText(CONTACT_EMAIL)
-          setCopied(true)
-        } catch {
-          window.location.href = `mailto:${CONTACT_EMAIL}`
-        }
+        if (!(await copy(CONTACT_EMAIL))) window.location.href = `mailto:${CONTACT_EMAIL}`
       }}
     >
       {copied ? <Check size={14} /> : <Copy size={14} />}
       <span aria-live="polite">{copied ? 'Copied' : 'Copy email'}</span>
     </button>
+  )
+}
+
+/**
+ * A social profile. Opens the link, or for copy-only platforms (Discord)
+ * copies the username and says so.
+ */
+export function SocialLink({
+  social: s,
+  variant,
+  index,
+  style,
+}: {
+  social: Social
+  variant: 'card' | 'row'
+  index?: number
+  style?: React.CSSProperties
+}) {
+  const { copied, copy } = useCopy()
+  const isCard = variant === 'card'
+  const handle = copied ? 'copied!' : s.handle
+
+  const inner = (
+    <>
+      {!isCard && index !== undefined && (
+        <span className="social-row-index">{String(index + 1).padStart(2, '0')}</span>
+      )}
+      <span className="social-icon">{s.icon}</span>
+      {isCard ? (
+        <span className="social-text">
+          <span className="social-name">{s.name}</span>
+          <span className="social-handle" aria-live="polite">{handle}</span>
+        </span>
+      ) : (
+        <>
+          <span className="social-name">{s.name}</span>
+          <span className="social-handle" aria-live="polite">{handle}</span>
+        </>
+      )}
+      {s.copy ? (
+        copied ? <Check className="social-arrow" size={16} /> : <Copy className="social-arrow" size={16} />
+      ) : (
+        <ArrowUpRight className="social-arrow" size={isCard ? 18 : 16} />
+      )}
+    </>
+  )
+
+  const className = isCard ? 'social-card card' : 'social-row'
+  const extra = isCard ? { 'data-reveal': true, onPointerMove: trackSpotlight, style } : {}
+
+  if (s.copy) {
+    const text = s.copy
+    return (
+      <button
+        type="button"
+        className={className}
+        onClick={() => copy(text)}
+        aria-label={`Copy ${s.name} username ${s.copy}`}
+        {...extra}
+      >
+        {inner}
+      </button>
+    )
+  }
+
+  return (
+    <a href={s.href} target="_blank" rel="noopener noreferrer" className={className} {...extra}>
+      {inner}
+    </a>
   )
 }
 
