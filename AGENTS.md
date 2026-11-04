@@ -8,18 +8,23 @@ A cinematic personal portfolio site for the user BLURRED. Features a loading scr
 
 ### Key Customization Points
 
-- `USERNAME` constant at top of `src/routes/index.tsx` — change to real handle
-- `SOCIALS` array in `src/routes/index.tsx` — update with real links/handles
-- Description text in the `desc-section` JSX block
+All site copy lives in `src/lib/site.tsx`:
+
+- `USERNAME`, `TAGLINE`, `BIO`, `BIO_DETAIL`, `FOCUS`, `STACK`
+- `SOCIALS` (name, handle, link, icon), `CONTACT_EMAIL`, `KOFI_URL`
+- `MUSIC_VIDEO_ID` — YouTube video used as the background track
+- Projects come from `content/projects/*.md`
 
 ### Architecture Notes
 
-- All styles are inline in `index.tsx` via a `<style>` tag (avoids Tailwind purge issues with dynamic inline style values)
-- Scroll animations use three derived values from `window.scrollY`: `blurProgress`, `descProgress`, `socialsProgress`
-- Loading screen state machine: `booting → ready → done` with CSS class-based transitions
-- Hero uses `position: sticky` inside a `160vh` wrapper so username stays visible while user scrolls enough to unblur it
-- Google Fonts loaded via `<link>` in the component (Syne + Space Mono)
-- `passive: true` scroll listener for performance
+- Design system lives in `src/styles.css` (tokens on `:root`, shared classes: `.container`, `.section`, `.eyebrow`, `.btn`, `.card`, `.window`, `.tag`, …). Routes use these classes rather than per-page `<style>` blocks.
+- `src/routes/__root.tsx` renders the shared shell: `SiteNav`, `ScrollProgress`, `SiteFooter`, and `MusicPlayer`, all wrapped in `MusicProvider`.
+- `src/components/site/Music.tsx` — YouTube player lives in the root so music keeps playing across client-side navigation. The home intro's ENTER click calls `start()` (the user gesture that unlocks audio). `entered` makes sure the intro only shows once per visit, and only when the visit starts on `/`.
+- `src/components/site/Chrome.tsx` — nav, footer, scroll progress bar, `Window` (macOS frame), `CopyEmailButton`, and `useReveal()` (IntersectionObserver that adds `.is-in` to `[data-reveal]` elements).
+- Scroll effects write CSS variables with `requestAnimationFrame` instead of React state: `--reveal` on `.hero-wrap` (username blur), `--p` on `.about` (word-by-word statement), `--page-progress` on `<html>`. This keeps scrolling smooth and avoids SSR hydration mismatches.
+- Hero uses `position: sticky` inside a `170vh` wrapper so the username stays pinned while it unblurs.
+- Google Fonts (Syne + Space Mono) are loaded from the root `head()`.
+- `prefers-reduced-motion` turns off ambient animation; `[data-reveal]` content stays visible without JS.
 
 ### Tech Stack
 
@@ -33,7 +38,7 @@ A cinematic personal portfolio site for the user BLURRED. Features a loading scr
 | Content | Content Collections (type-safe markdown) |
 | AI | TanStack AI with multi-provider support |
 | Language | TypeScript 5.7 (strict mode) |
-| Deployment | Netlify |
+| Deployment | Cloudflare Workers (`wrangler.jsonc` + `@cloudflare/vite-plugin`) |
 
 ## Directory Structure
 
