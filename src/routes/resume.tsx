@@ -1,146 +1,70 @@
-import { marked } from 'marked'
-
 import { createFileRoute } from '@tanstack/react-router'
-import { allJobs, allEducations } from 'content-collections'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from '@/components/ui/hover-card'
+import { allEducations, allJobs } from 'content-collections'
+import { marked } from 'marked'
+import { useReveal } from '@/components/site/Chrome'
 
 export const Route = createFileRoute('/resume')({
-  component: App,
+  head: () => ({ meta: [{ title: 'Resume | BLURRED' }] }),
+  component: Resume,
 })
 
-function App() {
+function Resume() {
+  useReveal()
+
   return (
-    <div className="min-h-screen p-8 lg:p-12">
-      <div className="max-w-4xl mx-auto space-y-12">
-        <div className="text-center space-y-4">
-          <h1 className="text-5xl font-bold">
-            My Resume
+    <div className="page">
+      <div className="container narrow">
+        <header className="page-head" data-reveal>
+          <div className="eyebrow">Resume</div>
+          <h1 className="h1">
+            Experience <span className="gold">&amp;</span> education.
           </h1>
-          <p className="text-lg">
-            Professional Experience & Education
-          </p>
-          <Separator className="mt-8" />
-        </div>
+        </header>
 
-        {/* Career Summary */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-2xl">
-              Career Summary
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center gap-8">
-              <p className="flex-1 leading-relaxed">
-                I am a passionate and driven professional seeking
-                opportunities that will leverage my extensive experience
-                in frontend development while providing continuous growth
-                and learning opportunities. My goal is to contribute to
-                innovative projects that challenge me to expand my skill
-                set and make meaningful impacts through technology.
-              </p>
-              <img
-                src="/headshot-on-white.jpg"
-                alt="Professional headshot"
-                className="w-44 h-52 rounded-2xl object-cover"
-              />
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Work Experience */}
-        <section className="space-y-6">
-          <h2 className="text-3xl font-semibold">
-            Work Experience
-          </h2>
-          <div className="space-y-6">
+        <section className="timeline-section">
+          <h2 className="h3">Work</h2>
+          <ol className="timeline">
             {allJobs.map((job) => (
-              <Card key={job.jobTitle}>
-                <CardHeader>
-                  <div className="flex justify-between items-start">
-                    <div className="space-y-2">
-                      <CardTitle className="text-xl">
-                        {job.jobTitle}
-                      </CardTitle>
-                      <p className="font-medium">
-                        {job.company} - {job.location}
-                      </p>
-                    </div>
-                    <Badge variant="secondary" className="text-sm">
-                      {job.startDate} - {job.endDate || 'Present'}
-                    </Badge>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="mb-6 leading-relaxed">
-                    {job.summary}
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {job.tags.map((tag) => (
-                      <HoverCard key={tag}>
-                        <HoverCardTrigger>
-                          <Badge variant="outline" className="cursor-pointer">
-                            {tag}
-                          </Badge>
-                        </HoverCardTrigger>
-                        <HoverCardContent className="w-64">
-                          <p className="text-sm">
-                            Experience with {tag} in professional development
-                          </p>
-                        </HoverCardContent>
-                      </HoverCard>
-                    ))}
-                  </div>
-                  {job.content && (
-                    <div
-                      className="mt-6 prose prose-sm max-w-none"
-                      dangerouslySetInnerHTML={{
-                        __html: marked(job.content),
-                      }}
-                    />
-                  )}
-                </CardContent>
-              </Card>
+              <li key={job._meta.path} className="timeline-item" data-reveal>
+                <div className="timeline-date">
+                  {job.startDate} — {job.endDate || 'Present'}
+                </div>
+                <h3 className="timeline-title">{job.jobTitle}</h3>
+                <div className="timeline-meta">
+                  {job.company} · {job.location}
+                </div>
+                <p className="timeline-text">{job.summary}</p>
+                {job.content && (
+                  <div className="prose-dark" dangerouslySetInnerHTML={{ __html: marked.parse(job.content) as string }} />
+                )}
+                <div className="tags">
+                  {job.tags.map((t) => (
+                    <span key={t} className="tag">
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              </li>
             ))}
-          </div>
+          </ol>
         </section>
 
-        {/* Education */}
-        <section className="space-y-6">
-          <h2 className="text-3xl font-semibold">
-            Education
-          </h2>
-          <div className="space-y-6">
-            {allEducations.map((education) => (
-              <Card key={education.school}>
-                <CardHeader>
-                  <CardTitle className="text-xl">
-                    {education.school}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="leading-relaxed">
-                    {education.summary}
-                  </p>
-                  {education.content && (
-                    <div
-                      className="mt-6 prose prose-sm max-w-none"
-                      dangerouslySetInnerHTML={{
-                        __html: marked(education.content),
-                      }}
-                    />
-                  )}
-                </CardContent>
-              </Card>
+        <section className="timeline-section">
+          <h2 className="h3">Education</h2>
+          <ol className="timeline">
+            {allEducations.map((ed) => (
+              <li key={ed._meta.path} className="timeline-item" data-reveal>
+                <div className="timeline-date">
+                  {ed.startDate} — {ed.endDate || 'Present'}
+                </div>
+                <h3 className="timeline-title">{ed.school}</h3>
+                <p className="timeline-text">{ed.summary}</p>
+                {ed.content && (
+                  <div className="prose-dark" dangerouslySetInnerHTML={{ __html: marked.parse(ed.content) as string }} />
+                )}
+              </li>
             ))}
-          </div>
+          </ol>
         </section>
       </div>
     </div>
